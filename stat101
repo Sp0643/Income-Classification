@@ -270,4 +270,119 @@ Want me to align the formulas exactly with how you define them on the slide (e.g
 
 
 
+Got it — I’ll make you an interactive Python code for skewness & kurtosis where you can change the shape, spread, and center of the data and see how the metrics change.
+This will work best in Jupyter Notebook using ipywidgets so you can “play” with sliders.
+
+
+---
+
+# Interactive Skewness & Kurtosis Demo
+# ------------------------------------
+# This code lets you tweak data parameters and watch skewness/kurtosis update live.
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import skew, kurtosis
+import ipywidgets as widgets
+from ipywidgets import interact
+
+# Function to generate and analyze data
+def skew_kurt_demo(dist="normal", n=1000, mean=0, std=1, skew_factor=0, heavy_tail=0):
+    """
+    dist: 'normal', 'uniform', 'exponential'
+    n: number of samples
+    mean, std: for normal/uniform adjustments
+    skew_factor: adds skew via exponential transformation
+    heavy_tail: adds kurtosis via t-distribution-like transformation
+    """
+    # Base distribution
+    if dist == "normal":
+        data = np.random.normal(mean, std, n)
+    elif dist == "uniform":
+        data = np.random.uniform(mean - std, mean + std, n)
+    elif dist == "exponential":
+        data = np.random.exponential(std, n) + mean
+    else:
+        raise ValueError("Choose: normal, uniform, exponential")
+    
+    # Apply skew factor (positive = right skew, negative = left skew)
+    if skew_factor != 0:
+        data = data ** (1 + skew_factor)
+
+    # Apply heavy tails (positive = heavier tails)
+    if heavy_tail > 0:
+        tail_noise = np.random.standard_t(df=max(1, 10 - heavy_tail*9), size=n)
+        data = mean + std * tail_noise
+
+    # Calculate skewness & kurtosis
+    data_skew = skew(data)
+    data_kurt = kurtosis(data)  # excess kurtosis (Normal = 0)
+    
+    # Plot histogram
+    plt.figure(figsize=(6, 4))
+    plt.hist(data, bins=30, density=True, alpha=0.6, color='skyblue', edgecolor='black')
+    plt.title(f"Distribution: {dist.capitalize()} | Skew={data_skew:.2f} | Kurtosis={data_kurt:.2f}")
+    plt.xlabel("Value")
+    plt.ylabel("Density")
+    plt.axvline(np.mean(data), color='red', linestyle='--', label=f"Mean={np.mean(data):.2f}")
+    plt.legend()
+    plt.show()
+
+# Interactive controls
+interact(
+    skew_kurt_demo,
+    dist=widgets.Dropdown(options=['normal', 'uniform', 'exponential'], value='normal', description='Distribution'),
+    n=widgets.IntSlider(value=1000, min=100, max=5000, step=100, description='Samples'),
+    mean=widgets.FloatSlider(value=0, min=-5, max=5, step=0.5, description='Mean'),
+    std=widgets.FloatSlider(value=1, min=0.5, max=5, step=0.5, description='Std Dev'),
+    skew_factor=widgets.FloatSlider(value=0, min=-1, max=1, step=0.1, description='Skew Factor'),
+    heavy_tail=widgets.FloatSlider(value=0, min=0, max=1, step=0.1, description='Heavy Tail')
+)
+
+
+---
+
+How this works
+
+skew_factor
+
+Positive → right skew
+
+Negative → left skew
+
+
+heavy_tail
+
+0 → normal tails
+
+Higher → heavier tails (higher kurtosis)
+
+
+You can switch between:
+
+Normal (baseline Gaussian)
+
+Uniform (flat, low kurtosis)
+
+Exponential (naturally right-skewed)
+
+
+Output shows:
+
+Skewness: measure of symmetry
+
+Kurtosis: “tailedness” (Excess kurtosis: normal = 0)
+
+
+
+
+---
+
+If you want, I can also add a live curve overlay of a normal distribution for comparison so that people can see how skewness and kurtosis distort the shape. That would make it even better for training.
+
+Do you want me to add that visual comparison?
+
+
+
+
 
