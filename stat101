@@ -108,3 +108,54 @@ print(list(zip(segments, filled_conditional)))
 
 Want quick mini-exercises to pair with this (e.g., “change one term to 60 and predict which summary shifts most”)?
 
+
+
+Alright — let’s make this training-friendly with plain lists, banking-themed, and short examples you can reuse in slides.
+
+
+---
+
+Geometric Mean Example
+
+Scenario:
+An investment grows by 10% the first year, 20% the second year, and -15% the third year.
+The geometric mean tells you the average yearly growth rate, accounting for compounding.
+
+import math
+
+growth_factors = [1.10, 1.20, 0.85]  
+geom_mean = math.prod(growth_factors) ** (1/len(growth_factors)) - 1  
+print(f"Average annual growth rate: {geom_mean*100:.2f}%")
+
+Why geometric mean here?
+Because returns multiply over time — you can’t just average percentages directly.
+
+
+---
+
+Harmonic Mean Example
+
+Scenario:
+A bank measures the average interest rate across three loans of equal principal:
+
+Loan 1: 4%
+
+Loan 2: 6%
+
+Loan 3: 8%
+
+
+interest_rates = [0.04, 0.06, 0.08]  
+harm_mean = len(interest_rates) / sum(1/r for r in interest_rates)  
+print(f"Average interest rate: {harm_mean*100:.2f}%")
+
+Why harmonic mean here?
+It’s best for rates (like speed, interest, P/E ratios) where you want each observation to have equal weight, not just the average of the rates.
+
+
+---
+
+If you want, I can also give you one visual slide-ready diagram showing when to use arithmetic, geometric, and harmonic mean so learners instantly remember. That would make it pop in your GenuDeck. Do you want me to prepare that?
+
+
+
