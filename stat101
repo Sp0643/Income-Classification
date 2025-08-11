@@ -1,0 +1,110 @@
+Great tweak—keeping it simple with plain Python lists. I’ll keep explanations short for your slides and give you comment-free code blocks you can drop into a training notebook.
+
+Means (arithmetic, geometric, harmonic)
+
+When to use
+
+Arithmetic: normal average for additive quantities (e.g., monthly income).
+
+Geometric: compounding/multiplicative effects (returns, growth).
+
+Harmonic: averaging rates/ratios; emphasizes smaller values.
+
+
+import math
+
+incomes = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000, 58500, 310000]
+
+arith_mean = sum(incomes) / len(incomes)
+geom_mean = math.prod(incomes) ** (1/len(incomes))
+harm_mean = len(incomes) / sum(1/x for x in incomes)
+
+print(arith_mean, geom_mean, harm_mean)
+
+Median (odd vs even)
+
+Why: robust to outliers/skew.
+
+import statistics as stats
+
+income_odd = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000, 58500]
+income_even = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000]
+
+median_odd = stats.median(income_odd)
+median_even = stats.median(income_even)
+
+print(median_odd, median_even)
+
+Mode on loan terms (months)
+
+Definitions
+Unimodal: one most frequent term.
+Bimodal: two tied most frequent terms.
+Multimodal: three or more tied most frequent terms.
+
+import statistics as stats
+
+loan_terms_uni = [12,12,12,6,24,12,18,12,24,36]
+loan_terms_bi = [12,24,12,24,6,18,36,12,24,18,36,6]
+loan_terms_multi = [6,12,18,6,12,18,6,12,18]
+
+print(stats.multimode(loan_terms_uni))
+print(stats.multimode(loan_terms_bi))
+print(stats.multimode(loan_terms_multi))
+
+Imputing missing loan terms when there are multiple modes
+
+Choices
+
+Random among tied modes.
+
+Proportional to observed frequencies.
+
+Conditional within a subgroup (best for ML when a predictor exists).
+
+
+import random
+import statistics as stats
+from collections import Counter
+
+random.seed(7)
+loan_terms = [12,6,18,12,18,6,None,None,None]
+observed = [x for x in loan_terms if x is not None]
+modes = stats.multimode(observed)
+filled_random = [x if x is not None else random.choice(modes) for x in loan_terms]
+print(filled_random)
+
+import random
+from collections import Counter
+
+random.seed(7)
+loan_terms = [12,6,18,12,18,6,None,None,None]
+obs_counts = Counter(x for x in loan_terms if x is not None)
+cats = list(obs_counts.keys())
+weights = [obs_counts[c]/sum(obs_counts.values()) for c in cats]
+filled_prop = [x if x is not None else random.choices(cats, weights=weights, k=1)[0] for x in loan_terms]
+print(filled_prop)
+
+import random
+import statistics as stats
+
+random.seed(7)
+segments = ["Retail","Retail","SME","SME","Retail","SME","Retail","SME","Retail"]
+loan_terms = [12,6,18,12,18,6,None,None,None]
+
+filled_conditional = loan_terms[:]
+for seg in set(segments):
+    idx = [i for i,(s,v) in enumerate(zip(segments,loan_terms)) if s==seg]
+    obs = [loan_terms[i] for i in idx if loan_terms[i] is not None]
+    if not obs:
+        continue
+    modes = stats.multimode(obs)
+    choice = random.choice(modes)
+    for i in idx:
+        if filled_conditional[i] is None:
+            filled_conditional[i] = choice
+
+print(list(zip(segments, filled_conditional)))
+
+Want quick mini-exercises to pair with this (e.g., “change one term to 60 and predict which summary shifts most”)?
+
