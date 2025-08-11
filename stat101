@@ -211,4 +211,63 @@ Do you want me to merge both parts into a single short code block so it runs in 
 
 
 
+Got it—plain lists, no data generation, and code without comments. I’ll cover the absolute (Range, Mean Deviation, Variance, SD) and relative (Coefficient of Mean Deviation, Coefficient of Variation) measures with banking-style dummy data.
+
+Absolute measures (one dataset)
+
+import statistics as stats
+
+incomes = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000, 58500, 310000]
+
+mean_val = sum(incomes) / len(incomes)
+median_val = stats.median(incomes)
+
+range_val = max(incomes) - min(incomes)
+
+mean_deviation_mean = sum(abs(x - mean_val) for x in incomes) / len(incomes)
+mean_deviation_median = sum(abs(x - median_val) for x in incomes) / len(incomes)
+
+sample_variance = stats.variance(incomes)
+population_variance = stats.pvariance(incomes)
+
+sample_sd = stats.stdev(incomes)
+population_sd = stats.pstdev(incomes)
+
+print(range_val)
+print(mean_deviation_mean, mean_deviation_median)
+print(sample_variance, population_variance)
+print(sample_sd, population_sd)
+
+Relative measures (same dataset)
+
+import statistics as stats
+
+incomes = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000, 58500, 310000]
+
+mean_val = sum(incomes) / len(incomes)
+mean_deviation_mean = sum(abs(x - mean_val) for x in incomes) / len(incomes)
+sample_sd = stats.stdev(incomes)
+
+coef_mean_deviation = mean_deviation_mean / mean_val
+coef_variation = sample_sd / mean_val
+
+print(coef_mean_deviation)
+print(coef_variation)
+
+Optional comparison of CV on two groups
+
+import statistics as stats
+
+branch_A_incomes = [42000, 48000, 50000, 52000, 56000, 60000]
+branch_B_incomes = [28000, 36000, 44000, 52000, 60000, 68000]
+
+cv_A = stats.stdev(branch_A_incomes) / (sum(branch_A_incomes)/len(branch_A_incomes))
+cv_B = stats.stdev(branch_B_incomes) / (sum(branch_B_incomes)/len(branch_B_incomes))
+
+print(cv_A, cv_B)
+
+Want me to align the formulas exactly with how you define them on the slide (e.g., sample vs population) before you present?
+
+
+
 
