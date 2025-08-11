@@ -1,3 +1,4 @@
+
 Great tweak—keeping it simple with plain Python lists. I’ll keep explanations short for your slides and give you comment-free code blocks you can drop into a training notebook.
 
 Means (arithmetic, geometric, harmonic)
@@ -156,6 +157,58 @@ It’s best for rates (like speed, interest, P/E ratios) where you want each obs
 ---
 
 If you want, I can also give you one visual slide-ready diagram showing when to use arithmetic, geometric, and harmonic mean so learners instantly remember. That would make it pop in your GenuDeck. Do you want me to prepare that?
+
+
+
+
+Got it — I’ll make it as simple as possible, still using your banking-style dummy data, plain Python lists, and no comments.
+
+
+---
+
+Absolute Measures
+
+import statistics as stats
+
+incomes = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000, 58500, 310000]
+
+mean_val = sum(incomes) / len(incomes)
+median_val = stats.median(incomes)
+
+range_val = max(incomes) - min(incomes)
+mean_dev = sum(abs(x - mean_val) for x in incomes) / len(incomes)
+variance_val = stats.pvariance(incomes)
+sd_val = stats.pstdev(incomes)
+
+print(range_val)
+print(mean_dev)
+print(variance_val)
+print(sd_val)
+
+
+---
+
+Relative Measures
+
+import statistics as stats
+
+incomes = [42000, 51000, 49500, 55000, 60000, 46000, 52500, 57000, 58500, 310000]
+
+mean_val = sum(incomes) / len(incomes)
+mean_dev = sum(abs(x - mean_val) for x in incomes) / len(incomes)
+sd_val = stats.pstdev(incomes)
+
+coef_mean_dev = mean_dev / mean_val
+coef_var = sd_val / mean_val
+
+print(coef_mean_dev)
+print(coef_var)
+
+
+---
+
+Do you want me to merge both parts into a single short code block so it runs in one go for your training session? That way your learners won’t have to run two scripts.
+
 
 
 
