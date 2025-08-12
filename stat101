@@ -384,5 +384,93 @@ Do you want me to add that visual comparison?
 
 
 
+Here’s the Python code to create a box plot for the same column (LoanAmount) shown in your histogram:
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 5))
+plt.boxplot(df['LoanAmount'].dropna(), vert=False)
+plt.title('Before Outlier Treatment')
+plt.xlabel('Loan Amount')
+plt.show()
+
+Notes:
+
+dropna() ensures missing values are ignored.
+
+vert=False makes the box plot horizontal like your histogram for easier comparison.
+
+You can replace df['LoanAmount'] with your actual DataFrame and column name.
+
+
+Do you want me to also
+
+
+
+
+Here’s clean, ready-to-run Python code for all three outlier removal approaches — IQR method, Z-score method, and Capping method — for your LoanAmount column.
+
+
+---
+
+1. IQR Method
+
+import pandas as pd
+import numpy as np
+
+# IQR method
+Q1 = df['LoanAmount'].quantile(0.25)
+Q3 = df['LoanAmount'].quantile(0.75)
+IQR = Q3 - Q1
+
+# Keep only values within the IQR bounds
+df_iqr = df[(df['LoanAmount'] >= Q1 - 1.5 * IQR) & (df['LoanAmount'] <= Q3 + 1.5 * IQR)]
+
+
+---
+
+2. Z-Score Method
+
+from scipy import stats
+
+# Calculate Z-scores
+z_scores = np.abs(stats.zscore(df['LoanAmount'].dropna()))
+df_zscore = df[z_scores < 3]  # Keep only rows where z < 3
+
+
+---
+
+3. Capping Method (Winsorization)
+
+# Define caps
+lower_cap = df['LoanAmount'].quantile(0.05)  # 5th percentile
+upper_cap = df['LoanAmount'].quantile(0.95)  # 95th percentile
+
+# Apply capping
+df_cap = df.copy()
+df_cap['LoanAmount'] = np.where(df_cap['LoanAmount'] < lower_cap, lower_cap,
+                                np.where(df_cap['LoanAmount'] > upper_cap, upper_cap, df_cap['LoanAmount']))
+
+
+---
+
+✅ Summary:
+
+IQR: Removes rows outside the IQR range.
+
+Z-score: Removes rows with extreme standard deviations.
+
+Capping: Replaces outliers with nearest percentile values instead of removing them.
+
+
+
+---
+
+If you want, I can also give you a side-by-side box plot before and after for all three methods so you can visually see the difference. That would make it much easier to compare.
+
+
+
+
+
 
 
