@@ -472,5 +472,25 @@ If you want, I can also give you a side-by-side box plot before and after for al
 
 
 
+Your error comes from two issues: you replaced the DataFrame with the z-score array, and you’re using a column name that doesn’t exist in that DF. Use a separate variable for the z-scores and the actual column name (in your screenshot it’s Income, not LoanAmount).
+
+Here’s the correct, minimal z-score outlier filter:
+
+from scipy.stats import zscore
+
+df_z = loan_df.copy()
+col = 'Income'  # change to 'LoanAmount' if that's the real column
+
+z = zscore(df_z[col].astype(float), nan_policy='omit')
+df_z = df_z.loc[(abs(z) < 3) | df_z[col].isna()]
+
+df_z.head()
+
+(If you want the plot after filtering:)
+
+ax = df_z[col].hist(bins=20, figsize=(12,4))
+
+
+
 
 
