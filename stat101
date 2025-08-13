@@ -492,5 +492,11 @@ ax = df_z[col].hist(bins=20, figsize=(12,4))
 
 
 
+if p_value < alpha:
+    print(f"Decision: Reject the null hypothesis (p = {p_value:.4f} < α = {alpha})\n"
+          "Inference: There is statistically significant evidence that the coin is biased.")
+else:
+    print(f"Decision: Fail to reject the null hypothesis (p = {p_value:.4f} ≥ α = {alpha})\n"
+          "Inference: There is not enough statistical evidence to say the coin is biased.")
 
 
