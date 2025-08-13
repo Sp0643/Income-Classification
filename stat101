@@ -500,3 +500,20 @@ else:
           "Inference: There is not enough statistical evidence to say the coin is biased.")
 
 
+
+Here’s a clean way to phrase your interpretation for the GPT prompt, based on the image and your explanation:
+
+
+---
+
+Interpretation:
+When tossing a fair coin, the probability of getting a tail on any single toss is 0.5. However, as we observe increasingly unlikely sequences — such as getting two tails in a row, then three tails, and eventually five tails — the probability of those events occurring purely by chance becomes much smaller. In statistical terms, the p-value decreases as the observed outcome becomes more extreme, providing stronger evidence against the null hypothesis that the coin is fair.
+
+
+---
+
+If you want, I can also make a more visual step-by-step explanation linking the sequence of tails to decreasing p-values so it matches exactly with the image’s coin graphics. Would you like me to prepare that?
+
+
+
+
