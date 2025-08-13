@@ -605,4 +605,27 @@ Similarly, the Loan_ID column is a unique identifier and does not contribute to 
 If you want, I can also give you a shorter version so it looks cleaner in the notebook but still keeps the warning note. Would you like me to prepare that too?
 
 
+Here’s a clear comment line you can add in your notebook so future readers know why Loan_ID is kept here, even though it’s not a predictive feature:
+
+# NOTE: Loan_ID is normally dropped before modeling because it has no predictive value.
+#       We have kept it here only for demonstration purposes:
+#       - To show how high-cardinality features create sparse data when one-hot encoded.
+#       - To illustrate the curse of dimensionality.
+#       - To discuss grouping high-cardinality categories into fewer buckets 
+#         (a process called binning or category reduction, also known as frequency encoding or bucketing).
+
+
+---
+
+💡 In your case, the technique you were thinking of is bucketing (binning) or category reduction.
+
+Bucketing/Binning: Grouping many distinct categories into a smaller set of broader categories.
+
+Example: 300 district codes → 4–5 geographic zones.
+
+
+For modeling, bucketing reduces the number of dummy variables and helps combat the curse of dimensionality when dealing with high-cardinality categorical variables.
+
+If you want, I can also give you a short code snippet to automatically bucket such high-cardinality categories into fewer groups. Would you like me to prepare that?
+
 
